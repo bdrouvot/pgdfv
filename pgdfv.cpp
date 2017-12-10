@@ -183,7 +183,7 @@ void readData(string p_fname, int p_blockSize, int lineS)
 
                         int pct_row_current = rows_current * 100 / numOfRowsI;
                         int pct_row_reusable = rows_reusable * 100 / numOfRowsI;
-                        int pct_row_reusable_display = (pct_row_reusable + 5) / 10;
+                        int pct_row_reusable_display = pct_row_reusable / 10;
 
                         int max_9_to_display = (9 < pct_row_reusable_display) ? 9 : pct_row_reusable_display;
 
