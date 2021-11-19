@@ -16,7 +16,7 @@ void banner()
         cout << endl
              << endl
              << "FOR STUDY PURPOSE ONLY" << endl;
-        cout << "Bertrand Drouvot: https://bdrouvot.wordpress.com/" << endl;
+        cout << "Bertrand Drouvot: https://bdrouvot.github.io" << endl;
 }
 
 void help()
@@ -341,8 +341,8 @@ void readData(string p_fname, int p_blockSize, int lineS,map<int, string> &p_col
                 int rows_unusable = 0;
 
                 // read pd_lower and pd_upper from PageHeaderData
-		int *PageHeaderData;
-		PageHeaderData = getPageHeaderData(i,blockSize,datafile);
+                int *PageHeaderData;
+		        PageHeaderData = getPageHeaderData(i,blockSize,datafile);
                 int pd_lowerI = *(PageHeaderData+0);
                 int pd_upperI = *(PageHeaderData+1);
 
@@ -354,8 +354,8 @@ void readData(string p_fname, int p_blockSize, int lineS,map<int, string> &p_col
                 for (int row = 0; row < numOfRowsI; row++)
                 {
                     // go to ItemIdData to get the offset of the row
-    		    int *ItemIdData;
-    		    ItemIdData = getItemIdData(i,blockSize,row,datafile);
+                    int *ItemIdData;
+                    ItemIdData = getItemIdData(i,blockSize,row,datafile);
                     int lp_lenI = *(ItemIdData+0);
                     int lp_offI = *(ItemIdData+1);
                     int lp_flagsI = *(ItemIdData+2);
@@ -363,8 +363,8 @@ void readData(string p_fname, int p_blockSize, int lineS,map<int, string> &p_col
                     if (lp_flagsI == 1)
                     {
                         // let's read HeapTupleHeaderData
-    			int *HeapTupleHeaderData;
-    			HeapTupleHeaderData = getHeapTupleHeaderData(i,blockSize,lp_offI,datafile);
+                        int *HeapTupleHeaderData;
+                        HeapTupleHeaderData = getHeapTupleHeaderData(i,blockSize,lp_offI,datafile);
 
                         int t_xminI = *(HeapTupleHeaderData+0);
                         int t_xmaxI = *(HeapTupleHeaderData+1);
@@ -392,7 +392,7 @@ void readData(string p_fname, int p_blockSize, int lineS,map<int, string> &p_col
                     printf("%08d - %08d:  ", i + 1, i + lineSize);
                 }
 
-		display_block(pct_reuse_and_gt_50,pct_reuse_and_lt_50,colorThresholds,max_9_to_display,pct_row_current,pct_freeI);
+		        display_block(pct_reuse_and_gt_50,pct_reuse_and_lt_50,colorThresholds,max_9_to_display,pct_row_current,pct_freeI);
 
                 i++;
                 datafile.seekg(i * blockSize);
@@ -421,7 +421,7 @@ void readIndex(string p_ifname,string p_dfname, int p_blockSize, int lineS,map<i
         string indexfileNameDbf = p_ifname;
         int lineSize = lineS;
 
-	map<int, string> colorThresholds = p_colorThresholds;
+        map<int, string> colorThresholds = p_colorThresholds;
         map<int, map<int, int>> idx_pct_reuse_and_gt_50;
         map<int, map<int, int>> idx_pct_reuse_and_lt_50;
 
@@ -443,123 +443,122 @@ void readIndex(string p_ifname,string p_dfname, int p_blockSize, int lineS,map<i
                 int pd_lowerI = *(PageHeaderData+0);
                 int pd_upperI = *(PageHeaderData+1);
                 int pd_specialI = *(PageHeaderData+2);
-		//cout << pd_specialI << endl;
-		// check type of index block
+		        //cout << pd_specialI << endl;
+		        // check type of index block
 
-	        int *OpaqueData;
-		OpaqueData = getOpaqueData(i,blockSize,pd_specialI,indexfile);
+	            int *OpaqueData;
+		        OpaqueData = getOpaqueData(i,blockSize,pd_specialI,indexfile);
                 int btpo_prevI = *(OpaqueData+0);
                 int btpo_nextI = *(OpaqueData+1);
                 int tree_levelI = *(OpaqueData+2);
                 int btpo_flagsI = *(OpaqueData+3);
 
-		//cout << "Prev: " << btpo_prevI << endl;
-		//cout << "Next: " << btpo_nextI << endl;
-		//cout << "Tree Level: " << tree_levelI << endl;
-		//cout << "btpo_flags: " << btpo_flagsI << endl;
+                //cout << "Prev: " << btpo_prevI << endl;
+                //cout << "Next: " << btpo_nextI << endl;
+                //cout << "Tree Level: " << tree_levelI << endl;
+                //cout << "btpo_flags: " << btpo_flagsI << endl;
 
 
-		// check btpo_flags with that in mind
+                // check btpo_flags with that in mind
 
-		/* Bits defined in btpo_flags */
-		//#define BTP_LEAF                (1 << 0)        /* leaf page, i.e. not internal page */
-		//#define BTP_ROOT                (1 << 1)        /* root page (has no parent) */
-		//#define BTP_DELETED             (1 << 2)        /* page has been deleted from tree */
-		//#define BTP_META                (1 << 3)        /* meta-page */
-		//#define BTP_HALF_DEAD   (1 << 4)        /* empty, but still in tree */
-		//#define BTP_SPLIT_END   (1 << 5)        /* rightmost page of split group */
-		//#define BTP_HAS_GARBAGE (1 << 6)        /* page has LP_DEAD tuples */
-		//#define BTP_INCOMPLETE_SPLIT (1 << 7)   /* right sibling's downlink is missing */
+                /* Bits defined in btpo_flags */
+                //#define BTP_LEAF                (1 << 0)        /* leaf page, i.e. not internal page */
+                //#define BTP_ROOT                (1 << 1)        /* root page (has no parent) */
+                //#define BTP_DELETED             (1 << 2)        /* page has been deleted from tree */
+                //#define BTP_META                (1 << 3)        /* meta-page */
+                //#define BTP_HALF_DEAD   (1 << 4)        /* empty, but still in tree */
+                //#define BTP_SPLIT_END   (1 << 5)        /* rightmost page of split group */
+                //#define BTP_HAS_GARBAGE (1 << 6)        /* page has LP_DEAD tuples */
+                //#define BTP_INCOMPLETE_SPLIT (1 << 7)   /* right sibling's downlink is missing */
 
-		if (tree_levelI != 0 || btpo_flagsI==8) {
-                   if (i > 1 && i % lineSize == 0)
+                if (tree_levelI != 0 || btpo_flagsI==8) {
+                    if (i > 1 && i % lineSize == 0)
                     {
                       cout << endl;
                       printf("%08d - %08d:  ", i + 1, i + lineSize);
                      }
-	           if (btpo_flagsI==8) { cout << "M"; }
-		     else if (btpo_flagsI==2) { cout << "R"; } 
-		     else { cout << "?"; }
-	  	} else {	
+	                if (btpo_flagsI==8) { cout << "M"; }
+                    else if (btpo_flagsI==2) { cout << "R"; }
+                    else { cout << "?"; }
+                } else if (btpo_flagsI==1){
 
-		// it is a leaf page
-		int idx_rows_current = 0;
-                int idx_rows_HOT_redirect = 0;
+                    // it is a leaf page
+                    int idx_rows_current = 0;
+                    int idx_rows_HOT_redirect = 0;
 
-                int numOfIndexI = (pd_lowerI - 24) / 4; // Number of Index entries
+                    int numOfIndexI = (pd_lowerI - 24) / 4; // Number of Index entries
 
-                int idx_pct_freeI;
-                idx_pct_freeI = (pd_upperI - pd_lowerI) * 100 / blockSize; // Free percent
+                    int idx_pct_freeI;
+                    idx_pct_freeI = (pd_upperI - pd_lowerI) * 100 / blockSize; // Free percent
 
-                for (int idx = 0; idx < numOfIndexI; idx++)
-                {
-                    // go to ItemIdData to get the offset of the index entry
-    		    int *ItemIdData;
-    		    ItemIdData = getItemIdData(i,blockSize,idx,indexfile);
-                    int lp_lenI = *(ItemIdData+0);
-                    int lp_offI = *(ItemIdData+1);
-                    int lp_flagsI = *(ItemIdData+2);
+                    for (int idx = 0; idx < numOfIndexI; idx++)
+                    {
+                        // go to ItemIdData to get the offset of the index entry
+                        int *ItemIdData;
+                        ItemIdData = getItemIdData(i,blockSize,idx,indexfile);
+                        int lp_lenI = *(ItemIdData+0);
+                        int lp_offI = *(ItemIdData+1);
+                        int lp_flagsI = *(ItemIdData+2);
 
-                    indexfile.seekg((i * blockSize) + lp_offI + 2); //set pointer at start of t_ctid
+                        indexfile.seekg((i * blockSize) + lp_offI + 2); //set pointer at start of t_ctid
                     
-                    char t_cid[6];
-                    int t_cidI;
-                    indexfile.read(t_cid, 6); // read 6 bytes
-		    memcpy(&t_cidI, t_cid, sizeof(t_cid));
+                        char t_cid[6];
+                        int t_cidI;
+                        indexfile.read(t_cid, 6); // read 6 bytes
+                        memcpy(&t_cidI, t_cid, sizeof(t_cid));
 
-                    unsigned last16bits = getbits(t_cidI, 32, 16);
-                    int last16bitsI = (int)last16bits;
+                        unsigned last16bits = getbits(t_cidI, 32, 16);
+                        int last16bitsI = (int)last16bits;
 
-                    unsigned first16bits = getbits(t_cidI, 0, 16);
-                    int first16bitsI = (int)first16bits; // block number
+                        unsigned first16bits = getbits(t_cidI, 0, 16);
+                        int first16bitsI = (int)first16bits; // block number
 
-                    unsigned middle16bits = getbits(t_cidI, 16, 16);
-                    int middle16bitsI = (int)middle16bits; // record number
+                        unsigned middle16bits = getbits(t_cidI, 16, 16);
+                        int middle16bitsI = (int)middle16bits; // record number
 
-		    //cout << "(" << first16bitsI << "," << middle16bits << ")" << endl;
+                        //cout << "(" << first16bitsI << "," << middle16bits << ")" << endl;
 
-		    // go to ItemIdData to get the offset of the row
-                    int *RowItemIdData;
-                    RowItemIdData = getItemIdData(first16bitsI,blockSize,middle16bits-1,datafile);
-                    int rowlp_lenI = *(RowItemIdData+0);
-                    int rowlp_offI = *(RowItemIdData+1);
-                    int rowlp_flagsI = *(RowItemIdData+2);
+                        // go to ItemIdData to get the offset of the row
+                        int *RowItemIdData;
+                        RowItemIdData = getItemIdData(first16bitsI,blockSize,middle16bits-1,datafile);
+                        int rowlp_lenI = *(RowItemIdData+0);
+                        int rowlp_offI = *(RowItemIdData+1);
+                        int rowlp_flagsI = *(RowItemIdData+2);
 
-                    if (rowlp_flagsI == 1)
-                    {
-                    // let's read HeapTupleHeaderData
-                       int *RowHeapTupleHeaderData;
-                       RowHeapTupleHeaderData = getHeapTupleHeaderData(first16bitsI,blockSize,rowlp_offI,datafile);
+                        if (rowlp_flagsI == 1)
+                        {
+                            // let's read HeapTupleHeaderData
+                            int *RowHeapTupleHeaderData;
+                            RowHeapTupleHeaderData = getHeapTupleHeaderData(first16bitsI,blockSize,rowlp_offI,datafile);
 
-                       int rowt_xminI = *(RowHeapTupleHeaderData+0);
-                       int rowt_xmaxI = *(RowHeapTupleHeaderData+1);
+                            int rowt_xminI = *(RowHeapTupleHeaderData+0);
+                            int rowt_xmaxI = *(RowHeapTupleHeaderData+1);
 
-                       if (rowt_xmaxI == 0)
-                       {
-                        idx_rows_current++;
-                       }
+                            if (rowt_xmaxI == 0)
+                            {
+                                idx_rows_current++;
+                            }
+                        }
+                        else if (rowlp_flagsI == 2 && rowlp_lenI == 0)
+                        {
+                            idx_rows_HOT_redirect++;
+                        }
                     }
-                    else if (rowlp_flagsI == 2 && rowlp_lenI == 0)
+
+                    int idx_pct_row_current = idx_rows_current * 100 / numOfIndexI;
+                    int idx_pct_rows_HOT_redirect = idx_rows_HOT_redirect * 100 / numOfIndexI;
+                    int idx_pct_row_HOT_redirect_display = idx_pct_rows_HOT_redirect / 10;
+                    int idx_max_9_to_display = (9 < idx_pct_row_HOT_redirect_display) ? 9 : idx_pct_row_HOT_redirect_display;
+
+                    if (i > 1 && i % lineSize == 0)
                     {
-                        idx_rows_HOT_redirect++;
+                        cout << endl;
+                        printf("%08d - %08d:  ", i + 1, i + lineSize);
                     }
-                }
 
-		int idx_pct_row_current = idx_rows_current * 100 / numOfIndexI;
-                int idx_pct_rows_HOT_redirect = idx_rows_HOT_redirect * 100 / numOfIndexI;
-                int idx_pct_row_HOT_redirect_display = idx_pct_rows_HOT_redirect / 10;
+                    display_block(idx_pct_reuse_and_gt_50,idx_pct_reuse_and_lt_50,colorThresholds,idx_max_9_to_display,idx_pct_row_current,idx_pct_freeI);
 
-		int idx_max_9_to_display = (9 < idx_pct_row_HOT_redirect_display) ? 9 : idx_pct_row_HOT_redirect_display;
-
-		if (i > 1 && i % lineSize == 0)
-                {
-                    cout << endl;
-                    printf("%08d - %08d:  ", i + 1, i + lineSize);
-                }
-
-		display_block(idx_pct_reuse_and_gt_50,idx_pct_reuse_and_lt_50,colorThresholds,idx_max_9_to_display,idx_pct_row_current,idx_pct_freeI);
-
-		} // end if leaf page	
+                } // end if leaf page
 
                 i++;
                 indexfile.seekg(i * blockSize);
@@ -580,71 +579,72 @@ void readIndex(string p_ifname,string p_dfname, int p_blockSize, int lineS,map<i
 
 int main(int argc, char *argv[])
 {
-        string dataFile = "-df";  //switch for datafile path
-        string indexFile = "-if";  //switch for index file path
-        string block = "-b";     //switch for block size
-        string bgColor = "-bg";  //what backgroupnd color is used
-        string lineSize = "-ls"; //size of the line to display
+    string dataFile = "-df";  //switch for datafile path
+    string indexFile = "-if";  //switch for index file path
+    string block = "-b";     //switch for block size
+    string bgColor = "-bg";  //what backgroupnd color is used
+    string lineSize = "-ls"; //size of the line to display
 
-        int lineS = 128;
-        int blockSize = 8192; //block size
-        string datafileName;
-        string indexfileName;
+    int lineS = 128;
+    int blockSize = 8192; //block size
+    string datafileName;
+    string indexfileName;
 
-        map<int, string> colorThresholds;
+    map<int, string> colorThresholds;
 
-        colorThresholds[75] = "GREEN";
-        colorThresholds[50] = "CYAN";
-        colorThresholds[25] = "YELLOW";
-        colorThresholds[0] = "RED";
+    colorThresholds[75] = "GREEN";
+    colorThresholds[50] = "CYAN";
+    colorThresholds[25] = "YELLOW";
+    colorThresholds[0] = "RED";
 
-        if (argc >= 2)
+    if (argc >= 2)
+    {
+        for (int i = 1; i < argc; i++)
         {
-            for (int i = 1; i < argc; i++)
+            if (argv[i] == dataFile)
             {
-                if (argv[i] == dataFile)
-                {
-                    datafileName = argv[i + 1];
-                }
-                else if (argv[i] == indexFile)
-                {
-                    indexfileName = argv[i + 1];
-                }
-                else if (argv[i] == block)
-                {
-                    blockSize = stoi(argv[i + 1]);
-                }
-                else if (argv[i] == lineSize)
-                {
-                    lineS = stoi(argv[i + 1]);
-                }
+                datafileName = argv[i + 1];
+            }
+            else if (argv[i] == indexFile)
+            {
+                indexfileName = argv[i + 1];
+            }
+            else if (argv[i] == block)
+            {
+                blockSize = stoi(argv[i + 1]);
+            }
+            else if (argv[i] == lineSize)
+            {
+                lineS = stoi(argv[i + 1]);
             }
         }
-        else
-        {
-          help();
-          return 1;
-        }
+    }
+    else
+    {
+      help();
+      return 1;
+    }
 	if (!indexfileName.empty()) {
-	   if (datafileName.empty()) {
-	     cout << "*** Mandatory data file empty ***" << endl;
-	     help();
-             return 1;
-	   }
-	   cout << endl;
-	   cout << "********** For Data: " << datafileName << " **********" << endl;
-	   cout << endl;
-           readData(datafileName, blockSize, lineS,colorThresholds);
-	   cout << endl;
-	   cout << "********** For Index: " << indexfileName << " **********" << endl;
-	   cout << endl;
-	   readIndex(indexfileName,datafileName, blockSize, lineS,colorThresholds);
+	    if (datafileName.empty()) {
+            cout << "*** Mandatory data file empty ***" << endl;
+	        help();
+            return 1;
+	    }
+	    cout << endl;
+        cout << "********** For Data: " << datafileName << " **********" << endl;
+        cout << endl;
+        readData(datafileName, blockSize, lineS,colorThresholds);
+
+        cout << endl;
+        cout << "********** For Index: " << indexfileName << " **********" << endl;
+        cout << endl;
+        readIndex(indexfileName,datafileName, blockSize, lineS,colorThresholds);
 	} else {
-	  cout << endl;
-	  cout << "********** For Data: " << datafileName << " **********" << endl;
-	  cout << endl;
+          cout << endl;
+          cout << "********** For Data: " << datafileName << " **********" << endl;
+          cout << endl;
           readData(datafileName, blockSize, lineS,colorThresholds);
 	}
 	banner();
-        return 0;
+    return 0;
 }
